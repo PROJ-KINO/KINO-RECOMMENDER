@@ -1,10 +1,27 @@
-from flask import Flask
+from flask import Flask, request, jsonify
+
+from recommender.data_loader import get_dataframes
+from recommender.hybrid import hybrid_recommend
 
 app = Flask(__name__)
 
-@app.route("/")
+@app.route('/recommend', methods=['POST'])
 def recommend():
-    return "KINO Recommender API alive!"
+    user_id = int(request.json['user_id'])
+    n = int(request.json.get('n', 20))
+    movie_ids = hybrid_recommend(user_id, n_total=n)
+
+    # MongoDB에서 영화 정보 가져오기
+    movies, *_ = get_dataframes()
+    # 추천 영화ID만 필터
+    movie_info = movies[movies['movie_id'].isin(movie_ids)][['movie_id', 'title', 'poster_url']]
+    # 추천된 순서대로 정렬
+    movie_info['order'] = movie_info['movie_id'].apply(lambda x: movie_ids.index(x))
+    movie_info = movie_info.sort_values('order')
+
+    # 딕셔너리 리스트로 반환
+    result = movie_info[['movie_id', 'title', 'poster_url']].to_dict(orient='records')
+    return jsonify({'movies': result})
 
 if __name__ == "__main__":
     app.run(port=5001)

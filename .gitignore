@@ -2,7 +2,7 @@ venv/
 __pycache__/
 *.pyc
 *.pkl
-model/
+recommender/model/
 notebooks/.ipynb_checkpoints/
 .DS_Store
 .env
