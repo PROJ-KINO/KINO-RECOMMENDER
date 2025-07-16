@@ -1,14 +1,28 @@
 import pymysql
 from pymongo import MongoClient
 import pandas as pd
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+MYSQL_HOST = os.getenv('MYSQL_HOST')
+MYSQL_USER = os.getenv('MYSQL_USER')
+MYSQL_PASSWORD = os.getenv('MYSQL_PASSWORD')
+MYSQL_DB = os.getenv('MYSQL_DB')
+MONGO_URI = os.getenv('MONGO_URI')
 
 # 1. MySQL 연결
 mysql_conn = pymysql.connect(
-    host='localhost', user='root', password='young2352!', db='kino', charset='utf8'
+    host=MYSQL_HOST,
+    user=MYSQL_USER,
+    password=MYSQL_PASSWORD,
+    db=MYSQL_DB,
+    charset='utf8'
 )
 
 # 2. MongoDB 연결
-mongo_client = MongoClient('mongodb://localhost:27017/')
+mongo_client = MongoClient(MONGO_URI)
 mongo_db = mongo_client['kino']
 
 def table_to_mongo(sql, mongo_collection):
@@ -28,7 +42,6 @@ def table_to_mongo(sql, mongo_collection):
     df = df.where(pd.notnull(df), None)
 
     # 4. Mongo에 insert
-    mongo_collection.insert_many(df.to_dict('records'))
     mongo_collection.delete_many({})  # 전체 삭제 후
     if not df.empty:
         mongo_collection.insert_many(df.to_dict('records'))
