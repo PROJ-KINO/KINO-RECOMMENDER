@@ -11,6 +11,10 @@ def recommend():
     n = int(request.json.get('n', 20))
     movie_ids = hybrid_recommend(user_id, n_total=n)
 
+    # short_review, my_pick_movie, movie_genre, user_genre, movies = get_dataframes()
+    # print("short_review columns:", short_review.columns)
+    # print(short_review.head())
+
     # MongoDB에서 영화 정보 가져오기
     movies, *_ = get_dataframes()
     # 추천 영화ID만 필터
@@ -24,4 +28,4 @@ def recommend():
     return jsonify({'movies': result})
 
 if __name__ == "__main__":
-    app.run(port=5001)
+    app.run(host="0.0.0.0", port=5001)

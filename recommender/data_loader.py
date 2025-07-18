@@ -1,8 +1,10 @@
 from pymongo import MongoClient
 import pandas as pd
+import os
 
 def get_dataframes():
-    client = MongoClient('mongodb://localhost:27017/')
+    mongo_uri = os.environ.get("MONGO_URI", "mongodb://mongo:27017/kino")
+    client = MongoClient(mongo_uri)
     db = client['kino']
     movies = pd.DataFrame(list(db['movies'].find()))
     user_genre = pd.DataFrame(list(db['user_genre'].find()))
