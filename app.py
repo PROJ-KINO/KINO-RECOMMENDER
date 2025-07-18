@@ -24,7 +24,7 @@ def recommend():
     movie_info = movie_info.sort_values('order')
 
     # 딕셔너리 리스트로 반환
-    result = movie_info[['movie_id', 'title', 'poster_url']].to_dict(orient='records')
+    result = movie_info[['movie_id', 'title', 'still_cut_url']].to_dict(orient='records')
     return jsonify({'movies': result})
 
 if __name__ == "__main__":
