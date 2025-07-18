@@ -18,12 +18,14 @@ def recommend():
     # MongoDB에서 영화 정보 가져오기
     movies, *_ = get_dataframes()
     # 추천 영화ID만 필터
-    movie_info = movies[movies['movie_id'].isin(movie_ids)][['movie_id', 'title', 'still_cut_url']]
-    # 추천된 순서대로 정렬
+    movie_info = movies[
+        (movies['movie_id'].isin(movie_ids)) &
+        (movies['still_cut_url'].notnull()) &
+        (movies['still_cut_url'] != '')
+        ][['movie_id', 'title', 'still_cut_url']].copy()
     movie_info['order'] = movie_info['movie_id'].apply(lambda x: movie_ids.index(x))
     movie_info = movie_info.sort_values('order')
 
-    # 딕셔너리 리스트로 반환
     result = movie_info[['movie_id', 'title', 'still_cut_url']].to_dict(orient='records')
     return jsonify({'movies': result})
 
