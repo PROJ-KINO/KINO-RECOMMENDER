@@ -18,7 +18,7 @@ def recommend():
     # MongoDB에서 영화 정보 가져오기
     movies, *_ = get_dataframes()
     # 추천 영화ID만 필터
-    movie_info = movies[movies['movie_id'].isin(movie_ids)][['movie_id', 'title', 'poster_url']]
+    movie_info = movies[movies['movie_id'].isin(movie_ids)][['movie_id', 'title', 'still_cut_url']]
     # 추천된 순서대로 정렬
     movie_info['order'] = movie_info['movie_id'].apply(lambda x: movie_ids.index(x))
     movie_info = movie_info.sort_values('order')
