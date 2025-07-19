@@ -35,10 +35,6 @@ def recommend():
         unique_ids = set(ids)  # 중복 제거!
         return [genre_map.get(gid) for gid in unique_ids if gid in genre_map]
 
-    def genre_names(movie_id):
-        ids = movie_genre_group.get(movie_id, [])
-        return [genre_map.get(gid) for gid in ids if gid in genre_map]
-
     movie_info['genres'] = movie_info['movie_id'].apply(genre_names)
 
     # JSON 반환
