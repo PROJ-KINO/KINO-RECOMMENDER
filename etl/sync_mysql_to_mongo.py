@@ -51,6 +51,7 @@ def table_to_mongo(sql, mongo_collection):
 table_to_mongo('SELECT * FROM movie', mongo_db['movies'])
 table_to_mongo('SELECT * FROM user_genre', mongo_db['user_genre'])
 table_to_mongo('SELECT * FROM movie_genre', mongo_db['movie_genre'])
+table_to_mongo('SELECT * FROM genre', mongo_db['genre'])
 table_to_mongo('SELECT user_id, movie_id, rating FROM short_review', mongo_db['short_review'])
 table_to_mongo('SELECT * FROM my_pick_movie', mongo_db['my_pick_movie'])
 

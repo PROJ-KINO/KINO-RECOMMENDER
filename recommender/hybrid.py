@@ -7,7 +7,7 @@ def get_latest_model_path():
         return f.read().strip()
 
 def hybrid_recommend(user_id, n_total=20, n_cf=15, n_content=5):
-    movies, user_genre, movie_genre, short_review, my_pick_movie = get_dataframes()
+    movies, user_genre, movie_genre, genre, short_review, my_pick_movie = get_dataframes()
     seen = set(short_review[short_review['user_id']==user_id]['movie_id']).union(
            set(my_pick_movie[my_pick_movie['user_id']==user_id]['movie_id']))
 
